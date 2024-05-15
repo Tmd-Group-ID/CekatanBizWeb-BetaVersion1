@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='asset/favicon.ico') }}" type="image/x-icon">
+    <meta description="CekatanBiz is Website Tools Data Analyst">
+    <title>CekatanBiz tools data analyst - Upload Dataset</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/uploadfile.css') }}">
+</head>
+<body>
+    
+    <button class="logout-button" onclick="logout()">Logout</button>
+        <div class="user-details">
+            <p>Your User ID: <span id="userId"></span></p>
+            <p>Your Name: <span id="userName"></span></p>
+            <p>Your Email: <span id="userEmail"></span></p>
+        </div>
+
+    <div class="upload-container">
+        
+        <div class="upload-area" id="uploadArea">
+            <input type="file" id="fileInput" accept=".csv, .sql">
+            <button onclick="document.getElementById('fileInput').click()">Browse</button>
+            <p>Drop a file here</p>
+            <p class="supported-files">*File supported: .csv, and .sql</p>
+        </div>
+        <div class="file-list" id="fileList">
+            <h3>Uploaded files</h3>
+        </div>
+        <h3>Column Name for Pie Chart:</h3>
+        <input type="text" id="columnName" name="column_name" required><br><br>
+        <button onclick="showDetailPopup()">Show File Detail</button>
+        <div class="result-container">
+            <div class="result-box">
+                <h3>Your Pie Chart:</h3>
+                <div class="chart" id="pieChart"><img src="{{ url_for('static', filename='uploads/pie_chart.png') }}" alt="Pie Chart CekatanBiz"/></div>
+            </div>
+            <div class="result-box">
+                <h3>Your Bar Chart:</h3>
+                <div class="chart" id="barChart"><img src="{{ url_for('static', filename='uploads/pie_chart.png') }}" alt="Bar Chart CekatanBiz"/></div>
+            </div>
+        </div>
+        
+        <div id="popup-detail" class="popup-detail">
+            <div class="popup-content-detail">
+                <span class="close-detail" onclick="hideDetailPopup()">&times;</span>
+                <h3>Detail Data:</h3>
+                <div id="fileContent"></div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/uploadfile.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='asset/favicon.ico') }}" type="image/x-icon">
+    <meta description="CekatanBiz is Website Tools Data Analyst">
+    <title>CekatanBiz tools data analyst - Register and Login</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f6f5f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 
+                        0 10px 10px rgba(0, 0, 0, 0.22);
+            width: 768px;
+            max-width: 100%;
+            display: flex;
+        }
+
+        .form-container {
+            padding: 50px;
+            width: 50%;
+        }
+
+        .form-container h1 {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #38d39f;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .form-container button:hover {
+            background-color: #32c48d;
+        }
+
+        .overlay-container {
+            width: 50%;
+            background-color: #38d39f;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 50px;
+        }
+
+        .overlay-container h1 {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .overlay-container p {
+            margin-bottom: 20px;
+        }
+
+        .overlay-container button {
+            width: auto;
+            background-color: transparent;
+            border: 2px solid white;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container sign-in-container">
+            <form id="signInForm" class="hidden">
+                <h1>Sign In</h1>
+                <input type="email" name="email" placeholder="Email" required />
+                <input type="password" name="password" placeholder="Password" required />
+                <button type="submit">Sign In</button>
+            </form>
+            <form id="signUpForm">
+                <h1>Create Account</h1>
+                <input type="text" name="name" placeholder="Name" required />
+                <input type="email" name="email" placeholder="Email" required />
+                <input type="password" name="password" placeholder="Password" required />
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <h1 id="overlayTitle">Welcome Back!</h1>
+            <p id="overlayText">To keep connected with us please login with your personal info</p>
+            <button id="overlayButton">Sign In</button>
+        </div>
+    </div>
+    <script>
+        const signInForm = document.getElementById('signInForm');
+        const signUpForm = document.getElementById('signUpForm');
+        const overlayButton = document.getElementById('overlayButton');
+        const overlayTitle = document.getElementById('overlayTitle');
+        const overlayText = document.getElementById('overlayText');
+
+        overlayButton.addEventListener('click', () => {
+            if (signInForm.classList.contains('hidden')) {
+                signUpForm.classList.add('hidden');
+                signInForm.classList.remove('hidden');
+                overlayTitle.textContent = 'Hello, Friend!';
+                overlayText.textContent = 'Join us to start analyzing your data';
+                overlayButton.textContent = 'Sign Up';
+            } else {
+                signInForm.classList.add('hidden');
+                signUpForm.classList.remove('hidden');
+                overlayTitle.textContent = 'Welcome Back!';
+                overlayText.textContent = 'To keep connected with us please login with your personal info';
+                overlayButton.textContent = 'Sign In';
+            }
+        });
+
+        signUpForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(signUpForm);
+            const response = await fetch('/register', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.success) {
+                alert('Register Successful');
+                signUpForm.reset();
+            } else {
+                alert('Register Failed: ' + result.message);
+            }
+        });
+
+        signInForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(signInForm);
+            const response = await fetch('/login', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.success) {
+                window.location.href = '/upload_files';
+            } else {
+                alert('Login Failed: ' + result.message);
+            }
+        });
+    </script>
+</body>
+</html>
